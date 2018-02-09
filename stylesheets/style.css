@@ -1,0 +1,60 @@
+
+header {
+  background-color: #E5F3F2;
+
+}
+
+h2 {
+
+}
+
+article {
+  border-bottom: solid 1px #D1D3D4;
+
+}
+
+form {
+  margin: auto;
+}
+
+.input-fields {
+  display: block;
+  margin: auto;
+  width: 60%;
+  height: 25px;
+  margin-bottom: 15px;
+}
+
+.title-field {
+
+}
+
+.body-field {
+
+}
+
+.save-button {
+  background-color: #00A79D;
+  border: none;
+  color: #FFFFFF;
+  margin-bottom: 15px;
+  font-family:'Roboto Slab', serif;
+}
+
+
+/*#E5F3F2  background color
+
+#00A79D logo
+#6D6E71 logo
+
+save btn normal #00A79D
+hover           #045E55
+
+EXAMPLE1 H1 #6D6E71
+ P #939598
+ QUALIT.SWIL #6D6E71
+ HORIZONTAL RULE #D1D3D4*/
+
+/*
+ font-family: 'Roboto Slab', serif;
+font-family: 'Open Sans', sans-serif;*/
