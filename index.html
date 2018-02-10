@@ -1,9 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/reset.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:700" rel="stylesheet">
+  <title>Idea Box</title>
 </head>
 <body>
-
+  <header>
+    <form>
+      <img class="logo" src="images/ideabox-logo.svg" alt="ideabox logo">
+      <input class="input-fields" id="title-field" type="text" name="title field" placeholder="Title">
+      <textarea class="input-fields" id="body-field" type="text" name="" placeholder="Body"> </textarea>
+      <input class="save-button" id="save-btn" type="submit" name="" value="save">
+    </form>
+  </header>
+  <section class="search-section">
+    <div class="wrapper">
+      <input class="input-fields" type="text" name="" placeholder="Search">
+    </div>
+  </section>
+  <section class="idea-section">
+    <div class="wrapper" id="idea-placement">
+     
+      <!-- <article class="object-container">
+        <div class="flex-container"><h2>Example Idea 1</h2>
+          <div class="delete-button"></div>
+        </div>
+          <p class="editable">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut blandit lorem dui. Duis ac ultrices ex. Phasellus commodo ipsum a est malesuada, at sodales ligula blandit. Nunc condimentum vehicula sapien, et lobortis enim vulputate ac.</p>
+          <div class="up-arrow"></div>
+          <div class="down-arrow"></div>
+          <p class="quality-rank">quality: <span class="open-sans">swill</span></p>
+      </article> -->
+    </div>
+  </section>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="scripts/ideabox.js"></script>
 </body>
 </html>
