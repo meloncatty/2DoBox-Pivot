@@ -1,60 +1,147 @@
-
+* { 
+  box-sizing: border-box; 
+}
 header {
   background-color: #E5F3F2;
-
+  padding: 30px;
 }
-
 h2 {
-
+  font-family: Roboto Slab;
+  font-size: 20px;
+  color: #6D6E71; 
 }
-
 article {
   border-bottom: solid 1px #D1D3D4;
-
+  width:100%;
 }
-
+input::placeholder {
+  opacity: .5;
+}
 form {
   margin: auto;
+  width: 50%;
 }
-
+ 
+p { 
+  color: #939598;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 20px;
+  line-height: 24px;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+.delete-button {
+  width:25px;
+  height: 25px;
+  background-image: url(../images/delete.svg);
+}
+.delete-button:hover {
+  background-image: url(../images/delete-hover.svg);
+}
+.up-arrow {
+  width:25px;
+  height: 25px;
+  background-image: url(../images/upvote.svg);
+  display: inline-block;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+.up-arrow:hover {
+  background-image: url(../images/upvote-hover.svg);
+}
+.down-arrow {
+  width:25px;
+  height: 25px;
+  background-image: url(../images/downvote.svg);
+  display: inline-block;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+.down-arrow:hover {
+  background-image: url(../images/downvote-hover.svg);
+}
 .input-fields {
   display: block;
-  margin: auto;
-  width: 60%;
-  height: 25px;
-  margin-bottom: 15px;
+  width: 100%;
+  height: 40px;
+  margin: 0 auto 20px auto;
+  padding: 0 0 0 10px;
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  border: solid 2px #D1D3D4;
 }
-
+.logo {
+  width: 50%;
+  margin: 30px auto 30px auto;
+  display: block;
+}
+.object-container{
+  
+}
 .title-field {
-
 }
-
 .body-field {
-
 }
-
 .save-button {
   background-color: #00A79D;
+  text-align: center;
   border: none;
   color: #FFFFFF;
-  margin-bottom: 15px;
   font-family:'Roboto Slab', serif;
+  font-size: 20px;
+  padding: 5px;
+  height: 40px;
+  width: 100%;
 }
-
-
-/*#E5F3F2  background color
-
-#00A79D logo
-#6D6E71 logo
-
-save btn normal #00A79D
-hover           #045E55
-
-EXAMPLE1 H1 #6D6E71
- P #939598
- QUALIT.SWIL #6D6E71
- HORIZONTAL RULE #D1D3D4*/
-
-/*
- font-family: 'Roboto Slab', serif;
-font-family: 'Open Sans', sans-serif;*/
+.save-button:hover {
+  background-color: #045E55;
+}
+.search-section {
+  padding: 30px 30px 0px 30px;
+}
+.idea-section {
+  padding: 0 30px 30px 30px;
+}
+.wrapper {
+  margin: auto;
+  width: 50%;
+}
+textarea {
+  resize: vertical;
+ }
+.quality-rank {
+  display: inline-block;
+  font-family:'Roboto Slab', serif;
+  font-size: 18px;
+  margin-bottom: 15px;
+} 
+.open-sans {
+  font-family: 'Open Sans', sans-serif;
+}
+@media only screen and (max-width: 1000px) {
+  .wrapper {
+    width: 65%;
+  }
+  form {
+    width: 65%;
+  }
+}
+@media only screen and (max-width: 750px) {
+  .wrapper {
+    width: 80%;
+  }
+  form {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 550px) {
+  .wrapper {
+    width: 90%;
+  }
+  form {
+    width: 90%;
+  }
+}
