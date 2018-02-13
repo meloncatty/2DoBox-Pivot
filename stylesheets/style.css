@@ -1,104 +1,125 @@
+/*standard elements*/
 * { 
   box-sizing: border-box; 
 }
-header {
-  background-color: #E5F3F2;
-  padding: 30px;
-}
-h2 {
-  font-family: Roboto Slab;
-  font-size: 20px;
-  color: #6D6E71; 
-}
+
 article {
   border-bottom: solid 1px #D1D3D4;
   width:100%;
 }
-input::placeholder {
-  opacity: .5;
-}
+
 form {
   margin: auto;
   width: 50%;
 }
- 
+
+h2 {
+  color: #6D6E71; 
+  font-family: Roboto Slab;
+  font-size: 20px;
+}
+
+header {
+  background-color: #E5F3F2;
+  padding: 30px;
+}
+
+input::placeholder {
+  opacity: .5;
+}
+
 p { 
   color: #939598;
   font-family: 'Open Sans', sans-serif;
-  margin-top: 20px;
   line-height: 24px;
+  margin-top: 20px;
 }
+
+textarea {
+  min-height: 40px;
+  resize: vertical;
+}
+
+textarea::placeholder {
+  opacity: 0.5;
+}
+
 .flex-container {
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
 }
+
+/*buttons*/
 .delete-button {
-  width:25px;
-  height: 25px;
   background-image: url(../images/delete.svg);
+  height: 25px;
+  width:25px;
 }
+
 .delete-button:hover {
   background-image: url(../images/delete-hover.svg);
 }
-.up-arrow {
-  width:25px;
-  height: 25px;
-  background-image: url(../images/upvote.svg);
-  display: inline-block;
-  margin-top: 20px;
-  margin-right: 10px;
-}
-.up-arrow:hover {
-  background-image: url(../images/upvote-hover.svg);
-}
+
 .down-arrow {
-  width:25px;
-  height: 25px;
   background-image: url(../images/downvote.svg);
   display: inline-block;
-  margin-top: 20px;
+  height: 25px;
   margin-right: 10px;
+  margin-top: 20px;
+  width:25px;
 }
+
 .down-arrow:hover {
   background-image: url(../images/downvote-hover.svg);
 }
-.input-fields {
-  display: block;
-  width: 100%;
-  height: 40px;
-  margin: 0 auto 20px auto;
-  padding: 0 0 0 10px;
-  font-size: 18px;
-  font-family: 'Open Sans', sans-serif;
-  border: solid 2px #D1D3D4;
+
+.up-arrow {
+  background-image: url(../images/upvote.svg);
+  display: inline-block;
+  height: 25px;
+  margin-right: 10px;
+  margin-top: 20px;
+  width:25px;
 }
-.logo {
-  width: 50%;
-  margin: 30px auto 30px auto;
-  display: block;
+
+.up-arrow:hover {
+  background-image: url(../images/upvote-hover.svg);
 }
-.object-container{
-  
-}
-.title-field {
-}
-.body-field {
-}
+
 .save-button {
   background-color: #00A79D;
-  text-align: center;
   border: none;
   color: #FFFFFF;
   font-family:'Roboto Slab', serif;
   font-size: 20px;
-  padding: 5px;
   height: 40px;
+  padding: 5px;
+  text-align: center;
   width: 100%;
 }
+
 .save-button:hover {
   background-color: #045E55;
 }
+
+.input-fields {
+  border: solid 2px #D1D3D4;
+  display: block;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  height: 40px;
+  margin: 0 auto 20px auto;
+  padding: 0 0 0 10px;
+  width: 100%;
+}
+
+.logo {
+  display: block;
+  margin: 30px auto 30px auto;
+  width: 50%;
+}
+
 .search-section {
   padding: 30px 30px 0px 30px;
 }
@@ -109,18 +130,19 @@ p {
   margin: auto;
   width: 50%;
 }
-textarea {
-  resize: vertical;
- }
+
 .quality-rank {
   display: inline-block;
   font-family:'Roboto Slab', serif;
   font-size: 18px;
   margin-bottom: 15px;
 } 
+
 .open-sans {
   font-family: 'Open Sans', sans-serif;
 }
+
+/*Media queries*/
 @media only screen and (max-width: 1000px) {
   .wrapper {
     width: 65%;
@@ -129,6 +151,7 @@ textarea {
     width: 65%;
   }
 }
+
 @media only screen and (max-width: 750px) {
   .wrapper {
     width: 80%;
@@ -137,6 +160,7 @@ textarea {
     width: 80%;
   }
 }
+
 @media only screen and (max-width: 550px) {
   .wrapper {
     width: 90%;

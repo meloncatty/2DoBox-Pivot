@@ -1,7 +1,11 @@
-
 var ideas = [];
 
-function ideaObjectCreator(saveIdeaTitle, saveIdeaBody){
+$(document).ready(function() {
+  grabIdea();
+  createTemplate();
+})
+
+function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody){
   this.title = saveIdeaTitle;
   this.body  = saveIdeaBody;
   this.quality = 'swill';
@@ -9,75 +13,92 @@ function ideaObjectCreator(saveIdeaTitle, saveIdeaBody){
 }
 
 function saveIdea () {
+  var saveIdeaTitle = $('#title-field').val();
+  var saveIdeaBody = $('#body-field').val();
+  var idNumber = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
+  ideas.push(idNumber);
   var stringIdeas = JSON.stringify(ideas);
-    localStorage.setItem("Idea Item", stringIdeas);
+  localStorage.setItem("ideas", stringIdeas);
 }
 
 function grabIdea () {
-  var storedIdea = localStorage.getItem("Idea Item") || '[]';;
+  for (i = 0; i < localStorage.length; i++) {
+  var storedIdea = localStorage.getItem(localStorage.key(i));
   var parsedIdea = JSON.parse(storedIdea);
-  ideas = parsedIdea;
+  // ideas.push(parsedIdea);
+  }
 }
-  
-
-//on page load this will grab idea from local storage and place it.
-$(document).ready(function() {
-  grabIdea();
-  attachTemplate();
-
-})
-
 
 //Event Listeners
 $('#save-btn').on('click', attachTemplate);
 
-
-// make a template function
-//refactor 
+// template function, 
 function createTemplate() {
   $('#idea-placement').html('');
   ideas.forEach(function(object) {
-    $('#idea-placement').prepend (`
-      <article class="object-container" id="${object.id}">
+    $('#idea-placement').append (`
+      <article class="object-container" id="${object}">
         <div class="flex-container">
-        <h2 class="editable">${object.title}</h2>
-        <div class="delete-button"></div>
+          <h2 class="editable">${object.title}</h2>
+          <div class="delete-button"></div>
         </div>
         <p class="editable">${object.body}</p>
         <div class="up-arrow"></div>
         <div class="down-arrow"></div>
-        <p class="quality-rank">quality: <span class="open-sans">swill</span></p>
-        </article>`);
-});
-
+        <p class="quality-rank">quality: <span class="open-sans">${object.quality}</span></p>
+      </article>`);
+  });
 }
+
 // prepend the template function
 function attachTemplate() {
   event.preventDefault();
- var saveIdeaTitle = $('#title-field').val();
- var saveIdeaBody = $('#body-field').val();
- var ideaCard = new ideaObjectCreator(saveIdeaTitle, saveIdeaBody);
-  ideas.unshift(ideaCard); 
-    saveIdea();
-    createTemplate(); 
-    clearInputs();
+
+
+ 
+  // console.log(idNumber)
+  // ideas.unshift(idNumber); 
+  saveIdea();
+  grabIdea();
+  createTemplate(); 
+  // var stringIdeas = JSON.stringify(ideas);
+  // localStorage.setItem(idNumber.id, stringIdeas);
+  clearInputs();
   }
+
 // clear inputs
 function clearInputs() {
   $('#title-field').val('');
   $('#body-field').val('');
   $('#title-field').focus();
 }
+  
+//Delete Card
+$('#idea-placement').on('click', '.delete-button', deleteIdea);
 
-//Contructor function saves card data
+function deleteIdea() {
+  var grandParentId = $(this).parent().parent().attr('id');
+  localStorage.removeItem(grandParentId);
+  $(this).parent().parent().remove();
+  console.log(grandParentId);
+}  
 
+$('#idea-placement').on('click', '.up-arrow', function () {
+  var thisIdeaQuality = $(this).children('.open-sans');
+  console.log(thisIdeaQuality);
+  upVoteIdea(thisIdeaQuality);
+});
 
-// when user clicks the save button ideas save to local storage
+function upVoteIdea(ideaQuality) {
+  if (ideaQuality.text() == 'swill') {
+    ideaQuality.text('plausible');
+  } else if (ideaQuality.text() == 'plausible') {
+    ideaQuality.text('genius');
+  } 
+}
 
-// on page load grab from local storage
 // upvote toggle between 3 values
 // downvote toogle between 3 values
 // delete existing card and from local storage
 // existing should editable
 // search functionality
-//plugins
