@@ -1,5 +1,6 @@
 var ideas = [];
-var localStorageKey = "ideas";
+var localStorageKey = "localStorageKey";
+
 
 $(document).ready(function() {
   grabIdea();
@@ -18,15 +19,16 @@ function saveIdea () {
   var saveIdeaBody = $('#body-field').val();
   var idNumber = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
   ideas.push(idNumber);
+  console.log(ideas);
   var stringIdeas = JSON.stringify(ideas);
   localStorage.setItem(localStorageKey, stringIdeas);
 }
 
 function grabIdea () {
- var storedIdeas = JSON.parse(localStorage.getItem(localStorageKey));
- ideas = storedIdeas;
-
-
+  var storedIdea = localStorage.getItem(localStorageKey);
+  var parsedIdea = JSON.parse(storedIdea);
+  console.log(parsedIdea);
+  ideas = parsedIdea || [];
 }
 
 //Event Listeners
@@ -37,7 +39,7 @@ function createTemplate() {
   $('#idea-placement').html('');
   ideas.forEach(function(object) {
     $('#idea-placement').append (`
-      <article class="object-container" id="${object}">
+      <article class="object-container" id="${object.id}">
         <div class="flex-container">
           <h2 class="editable">${object.title}</h2>
           <div class="delete-button"></div>
@@ -53,15 +55,9 @@ function createTemplate() {
 // prepend the template function
 function attachTemplate() {
   event.preventDefault();
-
-
- 
-  // console.log(idNumber)
-  // ideas.unshift(idNumber); 
   saveIdea();
+  grabIdea();
   createTemplate(); 
-  // var stringIdeas = JSON.stringify(ideas);
-  // localStorage.setItem(idNumber.id, stringIdeas);
   clearInputs();
   }
 
@@ -72,29 +68,36 @@ function clearInputs() {
   $('#title-field').focus();
 }
   
-//Delete Card
+//Delete Card Event
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
 
-function deleteIdea() {
+function deleteIdea() {  
   var grandParentId = $(this).parent().parent().attr('id');
-  localStorage.removeItem(grandParentId);
+  for (var i = 0; i < ideas.length; i++) {
+    var ideaId = ideas[i].id
+    if (grandParentId == ideaId) {
+      ideas.splice(i, 1);
+      var stringIdeas = JSON.stringify(ideas);
+      localStorage.setItem(localStorageKey, stringIdeas);
+    }
+  }
   $(this).parent().parent().remove();
-  console.log(grandParentId);
-}  
+} 
 
-$('#idea-placement').on('click', '.up-arrow', function () {
-  var thisIdeaQuality = $(this).children('.open-sans');
-  console.log(thisIdeaQuality);
-  upVoteIdea(thisIdeaQuality);
-});
 
-function upVoteIdea(ideaQuality) {
-  if (ideaQuality.text() == 'swill') {
-    ideaQuality.text('plausible');
-  } else if (ideaQuality.text() == 'plausible') {
-    ideaQuality.text('genius');
-  } 
-}
+// $('#idea-placement').on('click', '.up-arrow', function () {
+//   var thisIdeaQuality = $(this).children('.open-sans');
+//   console.log(thisIdeaQuality);
+//   upVoteIdea(thisIdeaQuality);
+// });
+
+// function upVoteIdea(ideaQuality) {
+//   if (ideaQuality.text() == 'swill') {
+//     ideaQuality.text('plausible');
+//   } else if (ideaQuality.text() == 'plausible') {
+//     ideaQuality.text('genius');
+//   } 
+// }
 
 // upvote toggle between 3 values
 // downvote toogle between 3 values
