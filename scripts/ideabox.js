@@ -1,4 +1,5 @@
 var ideas = [];
+var localStorageKey = "ideas";
 
 $(document).ready(function() {
   grabIdea();
@@ -18,15 +19,14 @@ function saveIdea () {
   var idNumber = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
   ideas.push(idNumber);
   var stringIdeas = JSON.stringify(ideas);
-  localStorage.setItem("ideas", stringIdeas);
+  localStorage.setItem(localStorageKey, stringIdeas);
 }
 
 function grabIdea () {
-  for (i = 0; i < localStorage.length; i++) {
-  var storedIdea = localStorage.getItem(localStorage.key(i));
-  var parsedIdea = JSON.parse(storedIdea);
-  // ideas.push(parsedIdea);
-  }
+ var storedIdeas = JSON.parse(localStorage.getItem(localStorageKey));
+ ideas = storedIdeas;
+
+
 }
 
 //Event Listeners
@@ -59,7 +59,6 @@ function attachTemplate() {
   // console.log(idNumber)
   // ideas.unshift(idNumber); 
   saveIdea();
-  grabIdea();
   createTemplate(); 
   // var stringIdeas = JSON.stringify(ideas);
   // localStorage.setItem(idNumber.id, stringIdeas);
