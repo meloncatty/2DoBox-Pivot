@@ -41,10 +41,10 @@ function createTemplate() {
     $('#idea-placement').prepend (`
       <article class="object-container" id="${object.id}">
         <div class="flex-container">
-          <h2 class="editable">${object.title}</h2>
+          <h2 class="entry-title">${object.title}</h2>
           <div class="delete-button"></div>
         </div>
-        <p class="editable">${object.body}</p>
+        <p class="entry-body">${object.body}</p>
         <div class="up-arrow"></div>
         <div class="down-arrow"></div>
         <p class="quality-rank">quality: <span class="open-sans">${object.quality}</span></p>
@@ -139,6 +139,21 @@ function downVoteIdeaStorage(ideaQuality) {
       localStorage.setItem(localStorageKey, stringIdeas);
   }
 }
+
+$('#search-field').on('keyup', function() {
+    var searchInput = $('#search-field').val();
+    var searcher = new RegExp(searchInput, 'gim');
+    $('.object-container').each(function() {
+        var title = $(this).find(".entry-title").text();
+        var body = $(this).find(".entry-body").text();
+        var match = (title.match(searcher) || body.match(searcher));
+        if (!match) {
+            $(this).hide();
+        } else {
+            $(this).show();
+        }
+    })
+});
 
 
 
