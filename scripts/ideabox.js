@@ -198,3 +198,18 @@ function editableBody(location, newText) {
     stringIdeas = JSON.stringify(ideas);
     localStorage.setItem(localStorageKey, stringIdeas);
 }
+
+// Expanding Text Area
+var expandingTextArea = (function(){
+  var textAreaTag = document.querySelectorAll('textarea')
+  for (var i=0; i<textAreaTag.length; i++){
+    textAreaTag[i].addEventListener('paste',autoExpand);
+    textAreaTag[i].addEventListener('input',autoExpand);
+    textAreaTag[i].addEventListener('keyup',autoExpand);
+  }
+  function autoExpand(e,el){
+    var el = el || e.target;
+    el.style.height = 'inherit';
+    el.style.height = el.scrollHeight+'px';
+  }
+})()
