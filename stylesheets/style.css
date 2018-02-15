@@ -24,6 +24,10 @@ header {
   padding: 30px;
 }
 
+input {
+  color: #6D6E71;
+}
+
 input::placeholder {
   opacity: .5;
 }
@@ -38,10 +42,12 @@ p {
 textarea {
   min-height: 40px;
   resize: vertical;
+  color: #6D6E71;
 }
 
 textarea::placeholder {
   opacity: 0.5;
+  padding-top: 5px;
 }
 
 .flex-container {
@@ -90,6 +96,7 @@ textarea::placeholder {
 .save-button {
   background-color: #00A79D;
   border: none;
+  box-shadow: 0px 4px 16px -5px rgba(0,0,0,0.75);
   color: #FFFFFF;
   font-family:'Roboto Slab', serif;
   font-size: 20px;
@@ -97,6 +104,7 @@ textarea::placeholder {
   padding: 5px;
   text-align: center;
   width: 100%;
+
 }
 
 .save-button:hover {
