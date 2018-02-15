@@ -41,7 +41,7 @@ $('#idea-placement').on('click', '.delete-button', deleteIdea);
 $('#idea-placement').on('click', '.up-arrow', upVoteIdeaStorage);
 $('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
 
-// template function, 
+// Template creator
 function createTemplate() {
   $('#idea-placement').html('');
   ideas.forEach(function(object) {
@@ -90,6 +90,7 @@ function deleteIdea() {
   $(this).parent().parent().remove();
 }
 
+// Arrow button functionality
 $('#idea-placement').on('click', '.up-arrow', function() {
   var thisIdeaQuality = $(this).closest('div').siblings('p').children(
     'span');
@@ -131,7 +132,7 @@ function upVoteIdeaStorage(ideaQuality) {
   }
 }
 
-function downVoteIdeaStorage(ideaQuality) {
+function downVoteIdeaStorage() {
   var grandParentId = $(this).parent()[0].id;
   for (var i = 0; i < ideas.length; i++) {
     var ideaId = ideas[i].id;
@@ -160,3 +161,40 @@ $('#search-field').on('keyup', function() {
     }
   })
 });
+
+// Editable
+$('#idea-placement').on('blur', '.entry-title', function(e) {
+    var newTitle = $(this).text();
+    editableTitle(this, newTitle);
+});
+
+function editableTitle(location, newText) {
+    var objectId = $(location).parent().parent().attr('id');
+    ideas = JSON.parse(localStorage.getItem(localStorageKey));
+    ideas.forEach(function(object) {
+        if (object.id == objectId) {
+            object.title = newText;
+            return object.title;
+        }
+    });
+    stringIdeas = JSON.stringify(ideas);
+    localStorage.setItem(localStorageKey, stringIdeas);
+}
+
+$('#idea-placement').on('blur', '.entry-body', function(e) {
+    var newBody = $(this).text();
+    editableBody(this, newBody);
+});
+
+function editableBody(location, newText) {
+    var objectId = $(location).parent().attr('id');
+    ideas = JSON.parse(localStorage.getItem(localStorageKey));
+    ideas.forEach(function(object) {
+        if (object.id == objectId) {
+            object.body = newText;
+            return object.body;
+        }
+    });
+    stringIdeas = JSON.stringify(ideas);
+    localStorage.setItem(localStorageKey, stringIdeas);
+}
