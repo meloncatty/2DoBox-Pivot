@@ -40,9 +40,9 @@ p {
 }
 
 textarea {
+  color: #6D6E71;
   min-height: 40px;
   resize: vertical;
-  color: #6D6E71;
 }
 
 textarea::placeholder {
@@ -104,7 +104,6 @@ textarea::placeholder {
   padding: 5px;
   text-align: center;
   width: 100%;
-
 }
 
 .save-button:hover {
@@ -131,9 +130,11 @@ textarea::placeholder {
 .search-section {
   padding: 30px 30px 0px 30px;
 }
+
 .idea-section {
   padding: 0 30px 30px 30px;
 }
+
 .wrapper {
   margin: auto;
   width: 50%;
