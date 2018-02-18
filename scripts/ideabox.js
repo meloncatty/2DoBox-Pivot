@@ -47,14 +47,14 @@ function createTemplate() {
   ideas.forEach(function(object) {
     $('#idea-placement').prepend(
       `
-      <article aria-live="assertive" aria-atomic="true" aria-label="Idea card" class="object-container" id="${object.id}">
+      <article aria-live="assertive" aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
-          <p aria-label="Title of idea" class="entry-title" contenteditable="true">${object.title}</p>
-          <button class="delete-button" alt="delete idea" aria-label="Delete idea"></button>
+          <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
+          <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
         </div>
-        <p aria-label="Body of idea" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
-        <button class="up-arrow" alt="upvote idea" aria-label="Upvote idea"></button>
-        <button class="down-arrow" alt="downvote idea" aria-label="Downvote idea"></button>
+        <p aria-label="Body of task" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
+        <button class="up-arrow" aria-label="Increase task importance"></button>
+        <button class="down-arrow" aria-label="Decrease task importance"></button>
         <p class="quality-rank">quality: <span aria-atomic="true" class="open-sans">${object.quality}</span></p>
       </article>`
     );
