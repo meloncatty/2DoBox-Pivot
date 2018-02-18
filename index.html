@@ -9,11 +9,11 @@
   </head>
   <body>
     <header>
-      <form>
+      <form aria-label="Submit idea">
         <img class="logo" src="images/ideabox-logo.svg" alt="ideabox logo">
-        <input class="input-fields" id="title-field" type="text" name="title field" placeholder="Title of your idea." aria-required="true">
-        <textarea class="input-fields" id="body-field" type="text" name="" placeholder="Write your idea here." aria-required="true"> </textarea>
-        <input class="save-button" id="save-btn" type="submit" name="" value="save">
+        <input class="input-fields" id="title-field" type="text" placeholder="Title of your idea." aria-required="true">
+        <textarea class="input-fields" id="body-field" type="text" placeholder="Write your idea here." aria-required="true"> </textarea>
+        <input class="save-button" id="save-btn" type="submit" value="save">
       </form>
     </header>
     <section class="search-section">
@@ -21,7 +21,7 @@
         <input id="search-field" class="input-fields" type="text" name="" placeholder="Search ideas">
       </article>
     </section>
-    <section class="idea-section">
+    <section class="idea-section" aria-relevant="addition removals">
       <article class="wrapper" id="idea-placement">
       </article>
     </section>

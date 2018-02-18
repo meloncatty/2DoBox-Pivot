@@ -43,19 +43,19 @@ $('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
 
 // Template creator
 function createTemplate() {
-  $('#idea-placement').html('');
+  //$('#idea-placement').html('');
   ideas.forEach(function(object) {
     $('#idea-placement').prepend(
       `
-      <article aria-label="Idea card" class="object-container" id="${object.id}">
+      <article aria-live="assertive" aria-atomic="true" aria-label="Idea card" class="object-container" id="${object.id}">
         <div class="flex-container">
-          <h2 class="entry-title" contenteditable="true">${object.title}</h2>
-          <div role="button" class="delete-button"></div>
+          <p aria-label="Title of idea" class="entry-title" contenteditable="true">${object.title}</p>
+          <button class="delete-button" alt="delete idea" aria-label="Delete idea"></button>
         </div>
-        <p class="entry-body" contenteditable="true">${object.body}</p>
-        <div role="button" class="up-arrow" alt="upvote button"></div>
-        <div role="button" class="down-arrow" alt="downvote button"></div>
-        <p class="quality-rank">quality: <span class="open-sans">${object.quality}</span></p>
+        <p aria-label="Body of idea" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
+        <button class="up-arrow" alt="upvote idea" aria-label="Upvote idea"></button>
+        <button class="down-arrow" alt="downvote idea" aria-label="Downvote idea"></button>
+        <p class="quality-rank">quality: <span aria-atomic="true" class="open-sans">${object.quality}</span></p>
       </article>`
     );
   });
@@ -92,7 +92,7 @@ function deleteIdea() {
 
 // Arrow button functionality
 $('#idea-placement').on('click', '.up-arrow', function() {
-  var thisIdeaQuality = $(this).closest('div').siblings('p').children(
+  var thisIdeaQuality = $(this).closest('button').siblings('p').children(
     'span');
   upVoteIdea(thisIdeaQuality);
 });
