@@ -23,8 +23,9 @@ function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
 function saveIdea() {
   var saveIdeaTitle = $('#title-field').val();
   var saveIdeaBody = $('#body-field').val();
-  var idNumber = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
-  ideas.push(idNumber);
+  var object = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
+  ideas.push(object);
+  displayNewestCard(object);
   console.log(ideas);
   var stringIdeas = JSON.stringify(ideas);
   localStorage.setItem(localStorageKey, stringIdeas);
@@ -43,8 +44,6 @@ $('#save-btn').on('click', attachTemplate);
 $('#save-btn').on('click', disableSave);
 $('.input-fields').on('keyup', enableSave);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
-$('#idea-placement').on('click', '.up-arrow', upVoteIdeaStorage);
-$('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
 
 // Template creator
 function createTemplate() {
@@ -64,6 +63,22 @@ function createTemplate() {
     );
   });
 }
+
+function displayNewestCard(object) {
+    $('#idea-placement').prepend(
+      `
+      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+        <div class="flex-container">
+          <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
+          <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
+        </div>
+        <p aria-label="Body of task" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
+        <button class="up-arrow" aria-label="Increase task importance"></button>
+        <button class="down-arrow" aria-label="Decrease task importance"></button>
+        <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
+      </article>`
+    );
+  };
 
 // enable save button
 function enableSave() {
@@ -87,7 +102,6 @@ function attachTemplate() {
   event.preventDefault();
   saveIdea();
   grabIdea();
-  createTemplate();
   clearInputs();
 }
 
@@ -133,12 +147,6 @@ function upVoteIdea(ideaQuality) {
   }
 }
 
-//pull out the anonymous function and make named function
-// $('#idea-placement').on('click', '.down-arrow', function() {
-//   var thisIdeaQuality = $(this).siblings('p').children('span');
-//   downVoteIdea(thisIdeaQuality);
-// });
-
 $('#idea-placement').on('click', '.down-arrow', downvoteImportance);
 
 function downvoteImportance() {
@@ -166,44 +174,6 @@ function upvoteImportance() {
     };
   storeIdeas();
 }}
-
-// function downVoteIdea(ideaQuality) {
-//   console.log(ideaQuality);
-//   var id = $(this).parent()
-//   console.log(id);
-  // var id = 
-  // if (ideaQuality.text() == 'genius') {
-  //   ideaQuality.text('plausible');
-  // } else if (ideaQuality.text() == 'plausible') {
-  //   ideaQuality.text('swill');
-  // }
-// }
-
-function upVoteIdeaStorage(ideaQuality) {
-  var grandParentId = $(this).parent()[0].id;
-  for (var i = 0; i < ideas.length; i++) {
-    var ideaId = ideas[i].id;
-    if (grandParentId == ideaId && ideas[i].quality == 'swill') {
-      ideas[i].quality = 'plausible';
-    } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
-      ideas[i].quality = 'genius';
-    }
-    storeIdeas();
-  }
-}
-
-function downVoteIdeaStorage() {
-  var grandParentId = $(this).parent()[0].id;
-  for (var i = 0; i < ideas.length; i++) {
-    var ideaId = ideas[i].id;
-    if (grandParentId == ideaId && ideas[i].quality == 'genius') {
-      ideas[i].quality = 'plausible';
-    } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
-      ideas[i].quality = 'swill';
-    }
-    storeIdeas();
-  }
-}
 
 //Search function and Event
 $('#search-field').on('keyup', function() {
@@ -259,16 +229,16 @@ function editableBody(location, newText) {
 }
 
 // Expanding Text Area
-var expandingTextArea = (function(){
-  var textAreaTag = document.querySelectorAll('textarea')
-  for (var i=0; i<textAreaTag.length; i++){
-    textAreaTag[i].addEventListener('paste',autoExpand);
-    textAreaTag[i].addEventListener('input',autoExpand);
-    textAreaTag[i].addEventListener('keyup',autoExpand);
-  }
-  function autoExpand(e,el){
-    var el = el || e.target;
-    el.style.height = 'inherit';
-    el.style.height = el.scrollHeight+'px';
-  }
-});
+// var expandingTextArea = (function(){
+//   var textAreaTag = document.querySelectorAll('textarea')
+//   for (var i=0; i<textAreaTag.length; i++){
+//     textAreaTag[i].addEventListener('paste',autoExpand);
+//     textAreaTag[i].addEventListener('input',autoExpand);
+//     textAreaTag[i].addEventListener('keyup',autoExpand);
+//   }
+//   function autoExpand(e,el){
+//     var el = el || e.target;
+//     el.style.height = 'inherit';
+//     el.style.height = el.scrollHeight+'px';
+//   }
+// });
