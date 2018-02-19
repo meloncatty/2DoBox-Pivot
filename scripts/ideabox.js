@@ -12,8 +12,11 @@ $(document).ready(function() {
 function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
   this.title = saveIdeaTitle;
   this.body = saveIdeaBody;
+  this.importanceCount = 0;
+  this.importance = ['None', 'Low', 'Normal', 'High', 'Critical'];
   this.quality = 'swill';
   this.id = Date.now();
+
 }
 
 // Saves idea and updates local storage array
@@ -56,7 +59,7 @@ function createTemplate() {
         <p aria-label="Body of task" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
         <button class="up-arrow" aria-label="Increase task importance"></button>
         <button class="down-arrow" aria-label="Decrease task importance"></button>
-        <p class="quality-rank">quality: <span aria-atomic="true" class="open-sans">${object.quality}</span></p>
+        <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
       </article>`
     );
   });
@@ -115,6 +118,7 @@ function storeIdeas() {
 };
 
 // Arrow button functionality
+//pull out the anonymous function and make named function
 $('#idea-placement').on('click', '.up-arrow', function() {
   var thisIdeaQuality = $(this).closest('button').siblings('p').children(
     'span');
@@ -129,18 +133,51 @@ function upVoteIdea(ideaQuality) {
   }
 }
 
-$('#idea-placement').on('click', '.down-arrow', function() {
-  var thisIdeaQuality = $(this).siblings('p').children('span');
-  downVoteIdea(thisIdeaQuality);
-});
+//pull out the anonymous function and make named function
+// $('#idea-placement').on('click', '.down-arrow', function() {
+//   var thisIdeaQuality = $(this).siblings('p').children('span');
+//   downVoteIdea(thisIdeaQuality);
+// });
 
-function downVoteIdea(ideaQuality) {
-  if (ideaQuality.text() == 'genius') {
-    ideaQuality.text('plausible');
-  } else if (ideaQuality.text() == 'plausible') {
-    ideaQuality.text('swill');
-  }
-}
+$('#idea-placement').on('click', '.down-arrow', downvoteImportance);
+
+function downvoteImportance() {
+  var thisIdeaImportance = $(this).siblings('p').children('span');
+  var id = $(this).parent().attr('id');
+  for (var i = 0; i < ideas.length; i++) {
+    if (id == ideas[i].id && ideas[i].importanceCount > 0) {
+      ideas[i].importanceCount--;
+      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
+      console.log();
+    };
+  storeIdeas();
+}}
+
+$('#idea-placement').on('click', '.up-arrow', upvoteImportance);
+
+function upvoteImportance() {
+  var thisIdeaImportance = $(this).siblings('p').children('span');
+  var id = $(this).parent().attr('id');
+  for (var i = 0; i < ideas.length; i++) {
+    if (id == ideas[i].id && ideas[i].importanceCount < 4) {
+      ideas[i].importanceCount++;
+      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
+      console.log();
+    };
+  storeIdeas();
+}}
+
+// function downVoteIdea(ideaQuality) {
+//   console.log(ideaQuality);
+//   var id = $(this).parent()
+//   console.log(id);
+  // var id = 
+  // if (ideaQuality.text() == 'genius') {
+  //   ideaQuality.text('plausible');
+  // } else if (ideaQuality.text() == 'plausible') {
+  //   ideaQuality.text('swill');
+  // }
+// }
 
 function upVoteIdeaStorage(ideaQuality) {
   var grandParentId = $(this).parent()[0].id;
@@ -234,4 +271,4 @@ var expandingTextArea = (function(){
     el.style.height = 'inherit';
     el.style.height = el.scrollHeight+'px';
   }
-})()
+});
