@@ -37,18 +37,18 @@ function grabIdea() {
 
 //Event Listeners
 $('#save-btn').on('click', attachTemplate);
-$('.input-fields').on('keyup', enableSaveButton);
+$('#save-btn').on('click', disableSave);
+$('.input-fields').on('keyup', enableSave);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
 $('#idea-placement').on('click', '.up-arrow', upVoteIdeaStorage);
 $('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
 
 // Template creator
 function createTemplate() {
-  //$('#idea-placement').html('');
   ideas.forEach(function(object) {
     $('#idea-placement').prepend(
       `
-      <article aria-live="assertive" aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
           <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
           <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
@@ -63,15 +63,21 @@ function createTemplate() {
 }
 
 // enable save button
-function enableSaveButton() {
+function enableSave() {
   var titleFieldValue = $('#title-field').val();
+  var bodyFieldValue = $('#body-field').val();
   var $saveBtn = $('.save-button');
-  if (titleFieldValue !== '') {
+  if (titleFieldValue !== '' && bodyFieldValue !== '') {
     $saveBtn.prop('disabled', false);
   } else {
     $saveBtn.prop('disabled', true);
   }
 }
+
+// disable save button 
+function disableSave() {
+  $('.save-button').prop('disabled', true);
+};
 
 // prepend the template function
 function attachTemplate() {
@@ -95,12 +101,18 @@ function deleteIdea() {
     var ideaId = ideas[i].id
     if (grandParentId == ideaId) {
       ideas.splice(i, 1);
-      var stringIdeas = JSON.stringify(ideas);
-      localStorage.setItem(localStorageKey, stringIdeas);
+      storeIdeas();
     }
   }
   $(this).parent().parent().remove();
 }
+
+//local storage
+
+function storeIdeas() {
+  var stringIdeas = JSON.stringify(ideas);
+  localStorage.setItem(localStorageKey, stringIdeas);
+};
 
 // Arrow button functionality
 $('#idea-placement').on('click', '.up-arrow', function() {
@@ -139,8 +151,7 @@ function upVoteIdeaStorage(ideaQuality) {
     } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
       ideas[i].quality = 'genius';
     }
-    var stringIdeas = JSON.stringify(ideas);
-    localStorage.setItem(localStorageKey, stringIdeas);
+    storeIdeas();
   }
 }
 
@@ -153,8 +164,7 @@ function downVoteIdeaStorage() {
     } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
       ideas[i].quality = 'swill';
     }
-    var stringIdeas = JSON.stringify(ideas);
-    localStorage.setItem(localStorageKey, stringIdeas);
+    storeIdeas();
   }
 }
 
