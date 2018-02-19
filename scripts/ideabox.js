@@ -37,6 +37,7 @@ function grabIdea() {
 
 //Event Listeners
 $('#save-btn').on('click', attachTemplate);
+$('.input-fields').on('keyup', enableSaveButton);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
 $('#idea-placement').on('click', '.up-arrow', upVoteIdeaStorage);
 $('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
@@ -59,6 +60,17 @@ function createTemplate() {
       </article>`
     );
   });
+}
+
+// enable save button
+function enableSaveButton() {
+  var titleFieldValue = $('#title-field').val();
+  var $saveBtn = $('.save-button');
+  if (titleFieldValue !== '') {
+    $saveBtn.prop('disabled', false);
+  } else {
+    $saveBtn.prop('disabled', true);
+  }
 }
 
 // prepend the template function
