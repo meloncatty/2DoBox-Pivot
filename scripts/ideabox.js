@@ -12,16 +12,20 @@ $(document).ready(function() {
 function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
   this.title = saveIdeaTitle;
   this.body = saveIdeaBody;
+  this.importanceCount = 0;
+  this.importance = ['None', 'Low', 'Normal', 'High', 'Critical'];
   this.quality = 'swill';
   this.id = Date.now();
+
 }
 
 // Saves idea and updates local storage array
 function saveIdea() {
   var saveIdeaTitle = $('#title-field').val();
   var saveIdeaBody = $('#body-field').val();
-  var idNumber = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
-  ideas.push(idNumber);
+  var object = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
+  ideas.push(object);
+  displayNewestCard(object);
   console.log(ideas);
   var stringIdeas = JSON.stringify(ideas);
   localStorage.setItem(localStorageKey, stringIdeas);
@@ -37,18 +41,16 @@ function grabIdea() {
 
 //Event Listeners
 $('#save-btn').on('click', attachTemplate);
-$('.input-fields').on('keyup', enableSaveButton);
+$('#save-btn').on('click', disableSave);
+$('.input-fields').on('keyup', enableSave);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
-$('#idea-placement').on('click', '.up-arrow', upVoteIdeaStorage);
-$('#idea-placement').on('click', '.down-arrow', downVoteIdeaStorage);
 
 // Template creator
 function createTemplate() {
-  //$('#idea-placement').html('');
   ideas.forEach(function(object) {
     $('#idea-placement').prepend(
       `
-      <article aria-live="assertive" aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
           <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
           <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
@@ -56,29 +58,50 @@ function createTemplate() {
         <p aria-label="Body of task" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
         <button class="up-arrow" aria-label="Increase task importance"></button>
         <button class="down-arrow" aria-label="Decrease task importance"></button>
-        <p class="quality-rank">quality: <span aria-atomic="true" class="open-sans">${object.quality}</span></p>
+        <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
       </article>`
     );
   });
 }
 
+function displayNewestCard(object) {
+    $('#idea-placement').prepend(
+      `
+      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+        <div class="flex-container">
+          <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
+          <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
+        </div>
+        <p aria-label="Body of task" aria-atomic="true" class="entry-body" contenteditable="true">${object.body}</p>
+        <button class="up-arrow" aria-label="Increase task importance"></button>
+        <button class="down-arrow" aria-label="Decrease task importance"></button>
+        <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
+      </article>`
+    );
+  };
+
 // enable save button
-function enableSaveButton() {
+function enableSave() {
   var titleFieldValue = $('#title-field').val();
+  var bodyFieldValue = $('#body-field').val();
   var $saveBtn = $('.save-button');
-  if (titleFieldValue !== '') {
+  if (titleFieldValue !== '' && bodyFieldValue !== '') {
     $saveBtn.prop('disabled', false);
   } else {
     $saveBtn.prop('disabled', true);
   }
 }
 
+// disable save button 
+function disableSave() {
+  $('.save-button').prop('disabled', true);
+};
+
 // prepend the template function
 function attachTemplate() {
   event.preventDefault();
   saveIdea();
   grabIdea();
-  createTemplate();
   clearInputs();
 }
 
@@ -95,14 +118,21 @@ function deleteIdea() {
     var ideaId = ideas[i].id
     if (grandParentId == ideaId) {
       ideas.splice(i, 1);
-      var stringIdeas = JSON.stringify(ideas);
-      localStorage.setItem(localStorageKey, stringIdeas);
+      storeIdeas();
     }
   }
   $(this).parent().parent().remove();
 }
 
+//local storage
+
+function storeIdeas() {
+  var stringIdeas = JSON.stringify(ideas);
+  localStorage.setItem(localStorageKey, stringIdeas);
+};
+
 // Arrow button functionality
+//pull out the anonymous function and make named function
 $('#idea-placement').on('click', '.up-arrow', function() {
   var thisIdeaQuality = $(this).closest('button').siblings('p').children(
     'span');
@@ -117,46 +147,33 @@ function upVoteIdea(ideaQuality) {
   }
 }
 
-$('#idea-placement').on('click', '.down-arrow', function() {
-  var thisIdeaQuality = $(this).siblings('p').children('span');
-  downVoteIdea(thisIdeaQuality);
-});
+$('#idea-placement').on('click', '.down-arrow', downvoteImportance);
 
-function downVoteIdea(ideaQuality) {
-  if (ideaQuality.text() == 'genius') {
-    ideaQuality.text('plausible');
-  } else if (ideaQuality.text() == 'plausible') {
-    ideaQuality.text('swill');
-  }
-}
-
-function upVoteIdeaStorage(ideaQuality) {
-  var grandParentId = $(this).parent()[0].id;
+function downvoteImportance() {
+  var thisIdeaImportance = $(this).siblings('p').children('span');
+  var id = $(this).parent().attr('id');
   for (var i = 0; i < ideas.length; i++) {
-    var ideaId = ideas[i].id;
-    if (grandParentId == ideaId && ideas[i].quality == 'swill') {
-      ideas[i].quality = 'plausible';
-    } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
-      ideas[i].quality = 'genius';
-    }
-    var stringIdeas = JSON.stringify(ideas);
-    localStorage.setItem(localStorageKey, stringIdeas);
-  }
-}
+    if (id == ideas[i].id && ideas[i].importanceCount > 0) {
+      ideas[i].importanceCount--;
+      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
+      console.log();
+    };
+  storeIdeas();
+}}
 
-function downVoteIdeaStorage() {
-  var grandParentId = $(this).parent()[0].id;
+$('#idea-placement').on('click', '.up-arrow', upvoteImportance);
+
+function upvoteImportance() {
+  var thisIdeaImportance = $(this).siblings('p').children('span');
+  var id = $(this).parent().attr('id');
   for (var i = 0; i < ideas.length; i++) {
-    var ideaId = ideas[i].id;
-    if (grandParentId == ideaId && ideas[i].quality == 'genius') {
-      ideas[i].quality = 'plausible';
-    } else if (grandParentId == ideaId && ideas[i].quality == 'plausible') {
-      ideas[i].quality = 'swill';
-    }
-    var stringIdeas = JSON.stringify(ideas);
-    localStorage.setItem(localStorageKey, stringIdeas);
-  }
-}
+    if (id == ideas[i].id && ideas[i].importanceCount < 4) {
+      ideas[i].importanceCount++;
+      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
+      console.log();
+    };
+  storeIdeas();
+}}
 
 //Search function and Event
 $('#search-field').on('keyup', function() {
@@ -212,16 +229,16 @@ function editableBody(location, newText) {
 }
 
 // Expanding Text Area
-var expandingTextArea = (function(){
-  var textAreaTag = document.querySelectorAll('textarea')
-  for (var i=0; i<textAreaTag.length; i++){
-    textAreaTag[i].addEventListener('paste',autoExpand);
-    textAreaTag[i].addEventListener('input',autoExpand);
-    textAreaTag[i].addEventListener('keyup',autoExpand);
-  }
-  function autoExpand(e,el){
-    var el = el || e.target;
-    el.style.height = 'inherit';
-    el.style.height = el.scrollHeight+'px';
-  }
-})()
+// var expandingTextArea = (function(){
+//   var textAreaTag = document.querySelectorAll('textarea')
+//   for (var i=0; i<textAreaTag.length; i++){
+//     textAreaTag[i].addEventListener('paste',autoExpand);
+//     textAreaTag[i].addEventListener('input',autoExpand);
+//     textAreaTag[i].addEventListener('keyup',autoExpand);
+//   }
+//   function autoExpand(e,el){
+//     var el = el || e.target;
+//     el.style.height = 'inherit';
+//     el.style.height = el.scrollHeight+'px';
+//   }
+// });
