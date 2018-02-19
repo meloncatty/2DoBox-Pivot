@@ -124,6 +124,10 @@ p {
   background-color: #045E55;
 }
 
+.save-button:disabled {
+  background-color: #6D6F74
+}
+
 .input-fields {
   border: solid 2px #D1D3D4;
   display: block;
