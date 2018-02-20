@@ -13,12 +13,20 @@
         <p>to-do<span class="new-color">list</span></p>
         <input class="input-fields" id="title-field" type="text" placeholder="Title of your to-do" aria-required="true" aria-label="Title for task">
         <input class="input-fields" id="body-field" type="text" placeholder="Write your to-do here" aria-required="true">
-        <input class="save-button" id="save-btn" type="submit" value="save" disabled>
+        <input class="button save-button" id="save-btn" type="submit" value="save" disabled>
       </form>
     </header>
     <section class="search-section">
       <article class="wrapper">
         <input id="search-field" class="input-fields" type="text" placeholder="Search">
+        <button class="button filterButton criticalImportance" aria-label="A button that filters in or out the importance of items deemed Critical">Critical</button>
+        <button class="button filterButton highImportance" aria-label="A button that filters in or out the importance of items deemed High">High</button>
+        <button class="button clearAllReadIdeas">Show completed TODOs</button>
+        <br>
+        <button class="button filterButton normalImportance" aria-label="A button that filters in or out the importance of items deemed Critical">Normal</button>
+        <button class="button filterButton lowImportance" aria-label="A button that filters in or out the importance of items deemed Critical">Low</button>
+        <button class="button filterButton noneImportance">None</button>
+        
       </article>
     </section>
     <section class="idea-section" aria-relevant="addition removals">
