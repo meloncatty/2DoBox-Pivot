@@ -16,7 +16,7 @@ function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
   this.importance = ['None', 'Low', 'Normal', 'High', 'Critical'];
   this.quality = 'swill';
   this.id = Date.now();
-
+  this.completed = false;
 }
 
 // Saves idea and updates local storage array
@@ -44,13 +44,14 @@ $('#save-btn').on('click', attachTemplate);
 $('#save-btn').on('click', disableSave);
 $('.input-fields').on('keyup', enableSave);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
+$('#idea-placement').on('click', '.checkbox', toggleCompleted);
 
 // Template creator
 function createTemplate() {
   ideas.forEach(function(object) {
+    if (object.completed === false)
     $('#idea-placement').prepend(
-      `
-      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+      `<article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
           <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
           <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
@@ -59,6 +60,7 @@ function createTemplate() {
         <button class="up-arrow" aria-label="Increase task importance"></button>
         <button class="down-arrow" aria-label="Decrease task importance"></button>
         <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
+        <span class="completed-button">completed &nbsp<input type="checkbox" class="checkbox"></span>
       </article>`
     );
   });
@@ -66,8 +68,7 @@ function createTemplate() {
 
 function displayNewestCard(object) {
     $('#idea-placement').prepend(
-      `
-      <article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+      `<article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
           <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
           <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
@@ -76,6 +77,7 @@ function displayNewestCard(object) {
         <button class="up-arrow" aria-label="Increase task importance"></button>
         <button class="down-arrow" aria-label="Decrease task importance"></button>
         <p class="quality-rank">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
+        <span class="completed-button">completed &nbsp<input type="checkbox" class="checkbox"></span>
       </article>`
     );
   };
@@ -124,8 +126,43 @@ function deleteIdea() {
   $(this).parent().parent().remove();
 }
 
-//local storage
+// completed states
+function toggleCompleted(){
+  var id = $(this).parent().parent().attr('id');
+  ideas.forEach(function(object) {
+    if (object.id == id) {
+        object.completed = !object.completed;
+        storeIdeas();
+    }
+  });
+  $(this).parent().toggleClass('completed-state');
+  $(this).parent().siblings().toggleClass('completed-state');
+  $(this).parent().siblings().find('.entry-title').toggleClass('completed-state');
+}
 
+$('.showAllReadIdeas').on('click', prependCompletedTasks);
+
+//prepend completed to-dos 
+function prependCompletedTasks() {
+  ideas.forEach(function(object) {
+    if (object.completed == true)
+    $('#idea-placement').prepend(
+      `<article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
+        <div class="flex-container completed-state">
+          <p aria-label="Title of task" class="entry-title completed-state" contenteditable="true">${object.title}</p>
+          <button class="delete-button" alt="delete idea" aria-label="Delete task"></button>
+        </div>
+        <p aria-label="Body of task" aria-atomic="true" class="entry-body completed-state" contenteditable="true">${object.body}</p>
+        <button class="up-arrow completed-state" aria-label="Increase task importance"></button>
+        <button class="down-arrow completed-state" aria-label="Decrease task importance"></button>
+        <p class="quality-rank completed-state">importance: <span aria-atomic="true" class="open-sans">${object.importance[object.importanceCount]}</span></p>
+        <span class="completed-button completed-state">completed &nbsp<input type="checkbox" class="checkbox" checked></span>
+      </article>`
+    );
+  });
+}
+
+//local storage
 function storeIdeas() {
   var stringIdeas = JSON.stringify(ideas);
   localStorage.setItem(localStorageKey, stringIdeas);

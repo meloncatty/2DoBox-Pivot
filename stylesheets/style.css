@@ -162,7 +162,7 @@ p {
   margin-right: 2%;
 }
 
-.clearAllReadIdeas {
+.showAllReadIdeas {
   width: 34%;
   height: 60px;
   margin-left: 2%;
@@ -207,6 +207,20 @@ p {
   font-family:'Roboto Slab', serif;
   font-size: 18px;
   margin-bottom: 15px;
+}
+
+.completed-button {
+  float: right;
+  position: relative;
+  top: 27px;
+  font-family: 'Roboto Slab', serif;
+  font-size: 18px;
+  color: #939598;
+}
+
+.completed-state {
+  text-decoration: line-through;
+  text-decoration-color: #DC214E;
 }
 
 .open-sans {
