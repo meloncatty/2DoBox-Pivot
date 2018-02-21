@@ -5,20 +5,28 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/reset.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:700" rel="stylesheet">
-    <title>Idea Box</title>
+    <title>To-do box</title>
   </head>
   <body>
     <header>
       <form aria-label="Submit idea">
-        <p>to-do<span class="new-color">list</span></p>
+        <p>to-do<span class="new-color">box</span></p>
         <input class="input-fields" id="title-field" type="text" placeholder="Title of your to-do" aria-required="true" aria-label="Title for task">
         <input class="input-fields" id="body-field" type="text" placeholder="Write your to-do here" aria-required="true">
-        <input class="save-button" id="save-btn" type="submit" value="save" disabled>
+        <input class="button save-button" id="save-btn" type="submit" value="save" disabled>
       </form>
     </header>
     <section class="search-section">
       <article class="wrapper">
         <input id="search-field" class="input-fields" type="text" placeholder="Search">
+        <button class="button filterButton criticalImportance" aria-label="A button that filters in or out items deemed critical importance">Critical</button>
+        <button class="button filterButton highImportance" aria-label="A button that filters in or out items deemed high importance">High</button>
+        <button class="button showAllReadIdeas">Show completed tasks</button>
+        <br>
+        <button class="button filterButton normalImportance" aria-label="A button that filters in or out items deemed normal importance">Normal</button>
+        <button class="button filterButton lowImportance" aria-label="A button that filters in or out items deemed low importance">Low</button>
+        <button class="button filterButton noneImportance" aria-label="A button that filters in or out items deemed not important">None</button>
+        
       </article>
     </section>
     <section class="idea-section" aria-relevant="addition removals">
