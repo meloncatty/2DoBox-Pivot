@@ -5,7 +5,7 @@ var localStorageKey = "localStorageKey";
 //On load
 $(document).ready(function() {
   grabIdea();
-  createTemplate();
+  createTemplate(ideas);
 })
 
 //Idea constructor
@@ -14,7 +14,6 @@ function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
   this.body = saveIdeaBody;
   this.importanceCount = 0;
   this.importance = ['None', 'Low', 'Normal', 'High', 'Critical'];
-  this.quality = 'swill';
   this.id = Date.now();
   this.completed = false;
 }
@@ -45,10 +44,18 @@ $('#save-btn').on('click', disableSave);
 $('.input-fields').on('keyup', enableSave);
 $('#idea-placement').on('click', '.delete-button', deleteIdea);
 $('#idea-placement').on('click', '.checkbox', toggleCompleted);
+$('#idea-placement').on('click', '.up-arrow', upvoteImportance);
+$('#idea-placement').on('click', '.down-arrow', downvoteImportance);
+$('.showAllReadIdeas').on('click', prependCompletedTasks);
+$('.search-section').on('click', '.criticalImportance', filterImportance);
+$('.search-section').on('click', '.highImportance', filterImportance);
+$('.search-section').on('click', '.normalImportance', filterImportance);
+$('.search-section').on('click', '.lowImportance', filterImportance);
+$('.search-section').on('click', '.noneImportance', filterImportance);
 
 // Template creator
-function createTemplate() {
-  ideas.forEach(function(object) {
+function createTemplate(array) {
+  array.forEach(function(object) {
     if (object.completed === false)
     $('#idea-placement').prepend(
       `<article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
@@ -94,7 +101,7 @@ function enableSave() {
   }
 }
 
-// disable save button 
+// disable save button
 function disableSave() {
   $('.save-button').prop('disabled', true);
 };
@@ -138,11 +145,9 @@ function toggleCompleted(){
   $(this).parent().toggleClass('completed-state');
   $(this).parent().siblings().toggleClass('completed-state');
   $(this).parent().siblings().find('.entry-title').toggleClass('completed-state');
-}
+};
 
-$('.showAllReadIdeas').on('click', prependCompletedTasks);
-
-//prepend completed to-dos 
+//prepend completed to-dos
 function prependCompletedTasks() {
   ideas.forEach(function(object) {
     if (object.completed == true)
@@ -160,7 +165,7 @@ function prependCompletedTasks() {
       </article>`
     );
   });
-}
+};
 
 //local storage
 function storeIdeas() {
@@ -170,21 +175,19 @@ function storeIdeas() {
 
 // Arrow button functionality
 //pull out the anonymous function and make named function
-$('#idea-placement').on('click', '.up-arrow', function() {
-  var thisIdeaQuality = $(this).closest('button').siblings('p').children(
-    'span');
-  upVoteIdea(thisIdeaQuality);
-});
+// $('#idea-placement').on('click', '.up-arrow', function() {
+//   var thisIdeaQuality = $(this).closest('button').siblings('p').children(
+//     'span');
+//   upVoteIdea(thisIdeaQuality);
+// });
 
-function upVoteIdea(ideaQuality) {
-  if (ideaQuality.text() == 'swill') {
-    ideaQuality.text('plausible');
-  } else if (ideaQuality.text() == 'plausible') {
-    ideaQuality.text('genius');
-  }
-}
-
-$('#idea-placement').on('click', '.down-arrow', downvoteImportance);
+// function upVoteIdea(ideaQuality) {
+//   if (ideaQuality.text() == 'swill') {
+//     ideaQuality.text('plausible');
+//   } else if (ideaQuality.text() == 'plausible') {
+//     ideaQuality.text('genius');
+//   };
+// };
 
 function downvoteImportance() {
   var thisIdeaImportance = $(this).siblings('p').children('span');
@@ -196,21 +199,32 @@ function downvoteImportance() {
       console.log();
     };
   storeIdeas();
-}}
-
-$('#idea-placement').on('click', '.up-arrow', upvoteImportance);
+  }
+}
 
 function upvoteImportance() {
   var thisIdeaImportance = $(this).siblings('p').children('span');
+  console.log();
   var id = $(this).parent().attr('id');
   for (var i = 0; i < ideas.length; i++) {
     if (id == ideas[i].id && ideas[i].importanceCount < 4) {
       ideas[i].importanceCount++;
       thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
-      console.log();
     };
   storeIdeas();
-}}
+  }
+}
+
+function filterImportance() {
+  var grabAllText = $('.object-container').text();
+  grabAllText = grabAllText.trim().split(' ');
+  var buttonText = this.innerHTML;
+  var specialArr = [];
+  ideas.filter((a) => a.importance[a.importanceCount].includes(buttonText) ? specialArr.push(a) : a);
+  $('#idea-placement').html(' ');
+  createTemplate(specialArr);
+}
+
 
 //Search function and Event
 $('#search-field').on('keyup', function() {
