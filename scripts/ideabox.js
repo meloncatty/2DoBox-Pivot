@@ -28,7 +28,6 @@ function saveIdea() {
   var object = new IdeaObjectCreator(saveIdeaTitle, saveIdeaBody);
   ideas.push(object);
   displayNewestCard(object);
-  console.log(ideas);
   var stringIdeas = JSON.stringify(ideas);
   localStorage.setItem(localStorageKey, stringIdeas);
 }
@@ -37,7 +36,6 @@ function saveIdea() {
 function grabIdea() {
   var storedIdea = localStorage.getItem(localStorageKey);
   var parsedIdea = JSON.parse(storedIdea);
-  console.log(parsedIdea);
   ideas = parsedIdea || [];
 }
 
@@ -179,38 +177,19 @@ function storeIdeas() {
   localStorage.setItem(localStorageKey, stringIdeas);
 };
 
-// Arrow button functionality
-//pull out the anonymous function and make named function
-// $('#idea-placement').on('click', '.up-arrow', function() {
-//   var thisIdeaQuality = $(this).closest('button').siblings('p').children(
-//     'span');
-//   upVoteIdea(thisIdeaQuality);
-// });
-
-// function upVoteIdea(ideaQuality) {
-//   if (ideaQuality.text() == 'swill') {
-//     ideaQuality.text('plausible');
-//   } else if (ideaQuality.text() == 'plausible') {
-//     ideaQuality.text('genius');
-//   };
-// };
-
 function downvoteImportance() {
   var thisIdeaImportance = $(this).siblings('p').children('span');
   var id = $(this).parent().attr('id');
   for (var i = 0; i < ideas.length; i++) {
     if (id == ideas[i].id && ideas[i].importanceCount > 0) {
       ideas[i].importanceCount--;
-      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);
-      console.log();
-    };
+      thisIdeaImportance.text(ideas[i].importance[ideas[i].importanceCount]);    };
   storeIdeas();
   }
 }
 
 function upvoteImportance() {
   var thisIdeaImportance = $(this).siblings('p').children('span');
-  console.log();
   var id = $(this).parent().attr('id');
   for (var i = 0; i < ideas.length; i++) {
     if (id == ideas[i].id && ideas[i].importanceCount < 4) {
@@ -311,18 +290,3 @@ function editableBody(location, newText) {
     stringIdeas = JSON.stringify(ideas);
     localStorage.setItem(localStorageKey, stringIdeas);
 }
-
-// Expanding Text Area
-// var expandingTextArea = (function(){
-//   var textAreaTag = document.querySelectorAll('textarea')
-//   for (var i=0; i<textAreaTag.length; i++){
-//     textAreaTag[i].addEventListener('paste',autoExpand);
-//     textAreaTag[i].addEventListener('input',autoExpand);
-//     textAreaTag[i].addEventListener('keyup',autoExpand);
-//   }
-//   function autoExpand(e,el){
-//     var el = el || e.target;
-//     el.style.height = 'inherit';
-//     el.style.height = el.scrollHeight+'px';
-//   }
-// });
