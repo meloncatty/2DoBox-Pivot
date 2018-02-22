@@ -263,6 +263,10 @@ p {
   .wrapper {
     width: 90%;
   }
+
+  .showToDos {
+    width: 45%;
+  }
 }
 
 @media only screen and (max-width: 510px) {
