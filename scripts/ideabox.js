@@ -1,11 +1,13 @@
-//Local Variables
+//Global Variables
 var ideas = [];
 var localStorageKey = "localStorageKey";
+var count = 0;
 
 //On load
 $(document).ready(function() {
   grabIdea();
-  createTemplate(ideas);
+  limitItemDisplay();
+  count = ideas.length;
 })
 
 //Idea constructor
@@ -13,6 +15,7 @@ function IdeaObjectCreator(saveIdeaTitle, saveIdeaBody) {
   this.title = saveIdeaTitle;
   this.body = saveIdeaBody;
   this.importanceCount = 0;
+  this.displayCount++;
   this.importance = ['None', 'Low', 'Normal', 'High', 'Critical'];
   this.id = Date.now();
   this.completed = false;
@@ -52,12 +55,13 @@ $('.search-section').on('click', '.highImportance', filterImportance);
 $('.search-section').on('click', '.normalImportance', filterImportance);
 $('.search-section').on('click', '.lowImportance', filterImportance);
 $('.search-section').on('click', '.noneImportance', filterImportance);
+$('.showToDos').on('click', showMoreToDos);
 
 // Template creator
 function createTemplate(array) {
   array.forEach(function(object) {
     if (object.completed === false)
-    $('#idea-placement').prepend(
+    $('#idea-placement').append(
       `<article aria-atomic="true" aria-label="Task card" class="object-container myVeryOwnSpecialHorizontalLine" id="${object.id}">
         <div class="flex-container">
           <p aria-label="Title of task" class="entry-title" contenteditable="true">${object.title}</p>
@@ -112,6 +116,7 @@ function attachTemplate() {
   saveIdea();
   grabIdea();
   clearInputs();
+  count = ideas.length;
 }
 
 // clear inputs
@@ -131,6 +136,7 @@ function deleteIdea() {
     }
   }
   $(this).parent().parent().remove();
+  count = ideas.length;
 }
 
 // completed states
@@ -225,6 +231,33 @@ function filterImportance() {
   createTemplate(specialArr);
 }
 
+function limitItemDisplay() {
+  var count = count;
+  if(ideas.length > 10) {
+    count = 10;
+  }
+  var reversedIdeas = ideas.reverse();
+  var filteredIdeas = reversedIdeas.filter(function(obj) {
+    return obj.completed == false;
+  })
+  var limitedIdeas = filteredIdeas.slice(0, count).map(function(obj) {
+    return obj;
+  })
+  createTemplate(limitedIdeas);
+}
+
+function showMoreToDos() {
+  count = count+10;
+  var reversedIdeas = ideas.reverse();
+  var filteredIdeas = reversedIdeas.filter(function(obj) {
+    return obj.completed == false;
+  })
+  var limitedIdeas = filteredIdeas.slice(0, count).reverse().map(function(obj) {
+    return obj;
+  })
+  $('#idea-placement').html(' ');
+  createTemplate(limitedIdeas);
+}
 
 //Search function and Event
 $('#search-field').on('keyup', function() {
