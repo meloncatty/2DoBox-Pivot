@@ -255,7 +255,7 @@ p {
   }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 570px) {
   form {
     width: 90%;
   }
@@ -301,5 +301,20 @@ p {
 @media only screen and (max-width: 510px) {
   .completed-button {
     bottom: 40px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .completed-button {
+    position: absolute;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    right: 40px;
+    float: none;
+  }
+
+   .filterButton {
+    font-size: 10px;
   }
 }
