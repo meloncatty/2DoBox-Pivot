@@ -170,6 +170,13 @@ p {
   font-size: 16px;
 }
 
+.showToDos {
+  height: 25px;
+  width: 35%;
+  margin: 10px auto;
+  display: inherit;
+}
+
 .input-fields {
   border: solid 2px #D1D3D4;
   display: block;
@@ -255,5 +262,44 @@ p {
 
   .wrapper {
     width: 90%;
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  button {
+    padding: 1px 4px;
+  }
+
+  .showAllReadIdeas {
+    font-size: 14px;
+  }
+
+  .filterButton {
+    font-size: 12px;
+  }
+
+  .noneImportance, .lowImportance, .normalImportance {
+    margin-right: 1.75%;
+  }
+
+  .completed-button {
+    font-size: 14px;
+    top: 0px;
+    left: 123px;
+  }
+
+  .quality-rank {
+    font-size: 14px;
+    float: right;
+  }
+
+  .down-arrow {
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 510px) {
+  .completed-button {
+    bottom: 40px;
   }
 }
